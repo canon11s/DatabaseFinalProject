@@ -20,16 +20,17 @@ class MainWindow(QMainWindow):
 
         #Properties of the window
         self.title = "Fantasy Premier League Toolkit"
-        self.setGeometry(100, 100, 1000, 800)
+        self.setGeometry(100, 100, 1200, 600)
 
         #Establish connection to database
-        #self.database = mysql.connector.connect(
-         #   host="localhost",
-          #  user="myUN",
-          #  passwd="myPW"
-        #)
+        self.database = mysql.connector.connect(
+            host="localhost",
+            user="databaseProject",
+            passwd="password",
+            database="prem"
+        )
 
-        #self.cursor = self.database.cursor()
+        self.cursor = self.database.cursor()
 
         #Declare tables to be filled by database
         self.fantraxTable = QTableWidget()
@@ -85,8 +86,8 @@ class MainWindow(QMainWindow):
         self.show()
 
     def searchClick(self):
-        queryString = "select * from players"
-        if (self.defButton.isChecked()):
+        queryString = "select player_name, " + self.decodeSortAlgo() + " as algo from player"
+        '''if (self.defButton.isChecked()):
             queryString = queryString + "\nwhere pos_id = 0"
         elif (self.midButton.isChecked()):
             queryString = queryString + "\nwhere pos_id = 1"
@@ -95,12 +96,22 @@ class MainWindow(QMainWindow):
 
         if (self.freeAgentOnlyButton.isChecked()):
             queryString = queryString + '\nwhere availability = "FA"'
+            '''
 
         queryString = queryString + self.decodeComboBox()
 
-        queryString = queryString + self.decodeSortAlgo()
+        queryString = queryString + "\norder by " + self.decodeSortAlgo() + " desc"
 
-        print(queryString)
+        self.cursor.execute(queryString)
+
+        self.fantraxTable.setRowCount(50)
+
+        i = 0
+        for player_name, algo in self.cursor:
+            self.fantraxTable.setItem(i, 0, QTableWidgetItem(player_name))
+            self.fantraxTable.setItem(i, 1, QTableWidgetItem(str(algo)))
+            i = i + 1
+
 
     def decodeSortAlgo(self):
         try:
@@ -113,12 +124,12 @@ class MainWindow(QMainWindow):
             float(self.keyPassesWeight.text())
             float(self.interceptionWeight.text())
         except:
-            error = QMessageBox(text="All algortihm values must be numbers.\nReseting to standard weights.")
+            error = QMessageBox(text="All algorithm values must be numbers.")
             error.exec()
             self.resetAlgoClick()
 
-        retString = "\nsort by goals * " + self.goalWeight.text() + " + assists * " + self.assistWeight.text()\
-                    + " + sot * " + self.sotWeight.text() + " + yellows * " + self.yellowWeight.text() + " desc"
+        retString = "goals * " + self.goalWeight.text() + " + assists * " + self.assistWeight.text()\
+                    + " + shots_on_target * " + self.sotWeight.text() + " + yellow_cards * " + self.yellowWeight.text()
         return retString
 
 
@@ -130,7 +141,7 @@ class MainWindow(QMainWindow):
         if (teams.index(self.teamSelectComboBox.currentText()) == 0):
             return ""
         else:
-            return "\nwhere team_id = " + str(teams.index(self.teamSelectComboBox.currentText()) - 1)
+            return "\nwhere club_id = " + str(teams.index(self.teamSelectComboBox.currentText()) - 1)
 
     def resetAlgoClick(self):
         self.goalWeight.setText("8")
@@ -141,7 +152,7 @@ class MainWindow(QMainWindow):
         self.tackleWeight.setText("1")
         self.keyPassesWeight.setText("2")
         self.interceptionWeight.setText("0.5")
-        notification = QMessageBox(text="Reseting to standard weights.")
+        notification = QMessageBox(text="Resetting to standard weights.")
         notification.exec()
 
 
@@ -185,47 +196,78 @@ class MainWindow(QMainWindow):
 
     def createAlgorithmBox(self):
         algorithmBox = QGroupBox("Sort algorithm")
-        algorithmGrid = QGridLayout()
-        lineEditWidth = 100
-        algorithmGrid.addWidget(QLabel(text="Goals:"), 0, 0)
+
+        algorithmVBox = QVBoxLayout()
+
+        algorithmHBox = QHBoxLayout()
+        algorithmHBoxF = QFrame()
+
+        algorithmLabels1 = QVBoxLayout()
+        algorithmLabelsF1 = QFrame()
+        algorithmLabels2 = QVBoxLayout()
+        algorithmLabelsF2 = QFrame()
+
+        algorithmTextboxes1 = QVBoxLayout()
+        algorithmTextboxesF1 = QFrame()
+        algorithmTextboxes2 = QVBoxLayout()
+        algorithmTextboxesF2 = QFrame()
+
+        lineEditWidth = 50
+
+        algorithmLabels1.addWidget(QLabel(text="Goals:"))
         self.goalWeight = QLineEdit()
         self.goalWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.goalWeight, 0, 1)
-        algorithmGrid.addWidget(QLabel(text="Assists:"), 1, 0)
+        algorithmTextboxes1.addWidget(self.goalWeight)
+        algorithmLabels1.addWidget(QLabel(text="Assists:"))
         self.assistWeight = QLineEdit()
         self.assistWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.assistWeight, 1, 1)
-        algorithmGrid.addWidget(QLabel(text="SoT:"), 2, 0)
+        algorithmTextboxes1.addWidget(self.assistWeight)
+        algorithmLabels1.addWidget(QLabel(text="SoT:"))
         self.sotWeight = QLineEdit()
         self.sotWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.sotWeight, 2, 1)
-        algorithmGrid.addWidget(QLabel(text="Yellows:"), 3, 0)
+        algorithmTextboxes1.addWidget(self.sotWeight)
+        algorithmLabels1.addWidget(QLabel(text="Yellows:"))
         self.yellowWeight = QLineEdit()
         self.yellowWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.yellowWeight, 3, 1)
-        algorithmGrid.addWidget(QLabel(text="Reds:"), 4, 0)
+        algorithmTextboxes1.addWidget(self.yellowWeight)
+        algorithmLabels2.addWidget(QLabel(text="Reds:"))
         self.redWeight = QLineEdit()
         self.redWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.redWeight, 4, 1)
-        algorithmGrid.addWidget(QLabel(text="Tackles:"), 5, 0)
+        algorithmTextboxes2.addWidget(self.redWeight)
+        algorithmLabels2.addWidget(QLabel(text="Tackles:"))
         self.tackleWeight = QLineEdit()
         self.tackleWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.tackleWeight, 5, 1)
-        algorithmGrid.addWidget(QLabel(text="Key Passes:"), 6, 0)
+        algorithmTextboxes2.addWidget(self.tackleWeight)
+        algorithmLabels2.addWidget(QLabel(text="Key Passes:"))
         self.keyPassesWeight = QLineEdit()
         self.keyPassesWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.keyPassesWeight, 6, 1)
-        algorithmGrid.addWidget(QLabel(text="Interceptions:"), 7, 0)
+        algorithmTextboxes2.addWidget(self.keyPassesWeight)
+        algorithmLabels2.addWidget(QLabel(text="Interceptions:"))
         self.interceptionWeight = QLineEdit()
         self.interceptionWeight.setFixedWidth(lineEditWidth)
-        algorithmGrid.addWidget(self.interceptionWeight, 7, 1)
+        algorithmTextboxes2.addWidget(self.interceptionWeight)
+
+        algorithmLabelsF1.setLayout(algorithmLabels1)
+        algorithmTextboxesF1.setLayout(algorithmTextboxes1)
+
+        algorithmLabelsF2.setLayout(algorithmLabels2)
+        algorithmTextboxesF2.setLayout(algorithmTextboxes2)
+
+        algorithmHBox.addWidget(algorithmLabelsF1)
+        algorithmHBox.addWidget(algorithmTextboxesF1)
+        algorithmHBox.addWidget(algorithmLabelsF2)
+        algorithmHBox.addWidget(algorithmTextboxesF2)
+
+        algorithmHBoxF.setLayout(algorithmHBox)
+
+        algorithmVBox.addWidget(algorithmHBoxF)
 
         self.resetButton = QPushButton(text="Reset Algorithm")
-        algorithmGrid.addWidget(self.resetButton, 8, 0, 1, 2)
+        algorithmVBox.addWidget(self.resetButton)
         self.resetButton.clicked.connect(self.resetAlgoClick)
 
+        algorithmBox.setLayout(algorithmVBox)
 
-        algorithmBox.setLayout(algorithmGrid)
         return algorithmBox
 
     def createTeamSelectBox(self):
