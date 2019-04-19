@@ -78,16 +78,17 @@ class MainWindow(QMainWindow):
         tableL.addWidget(self.createFantraxBox())
 
         #Add the frames to the main layout
-        self.mainL.addWidget(userInputF)
-        self.mainL.addWidget(tableF)
+        self.mainL.addWidget(userInputF, 1)
+        self.mainL.addWidget(tableF, 2)
         #Set the layout to the layout just generated
         self.mainF.setLayout(self.mainL)
         #Show!
         self.show()
 
     def searchClick(self):
+        self.fantraxTable.clear()
         queryString = "select player_name, " + self.decodeSortAlgo() + " as algo from player"
-        '''if (self.defButton.isChecked()):
+        if (self.defButton.isChecked()):
             queryString = queryString + "\nwhere pos_id = 0"
         elif (self.midButton.isChecked()):
             queryString = queryString + "\nwhere pos_id = 1"
@@ -96,7 +97,6 @@ class MainWindow(QMainWindow):
 
         if (self.freeAgentOnlyButton.isChecked()):
             queryString = queryString + '\nwhere availability = "FA"'
-            '''
 
         queryString = queryString + self.decodeComboBox()
 
