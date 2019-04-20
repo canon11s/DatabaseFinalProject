@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
 
         #Add the frames to the main layout
         self.mainL.addWidget(userInputF, 1)
-        self.mainL.addWidget(tableF, 2)
+        self.mainL.addWidget(tableF, 4)
         #Set the layout to the layout just generated
         self.mainF.setLayout(self.mainL)
         #Show!
