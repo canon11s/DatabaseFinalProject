@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab95a3fb-cca4-49b8-8703-c3a7100323ec" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/setup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/setup.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/lib/resources/CleanedFantraxScrape.csv" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/resources/CleanedFantraxScrape.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/src/CsvClean.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/CsvClean.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/src/View.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/View.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/venv/src/View.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="389" column="27" lean-forward="true" selection-start-line="389" selection-start-column="27" selection-end-line="389" selection-end-column="27" />
+            <state relative-caret-position="488">
+              <caret line="229" column="42" selection-start-line="229" selection-start-column="42" selection-end-line="229" selection-end-column="42" />
               <folding>
                 <element signature="e#125#135#0" expanded="true" />
               </folding>
@@ -63,6 +59,8 @@
       <find>decode</find>
       <find>decodeCom</find>
       <find>self.fantraxTable</find>
+      <find>resetAlgo</find>
+      <find>resetalgo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -293,8 +291,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/src/View.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="389" column="27" lean-forward="true" selection-start-line="389" selection-start-column="27" selection-end-line="389" selection-end-column="27" />
+        <state relative-caret-position="488">
+          <caret line="229" column="42" selection-start-line="229" selection-start-column="42" selection-end-line="229" selection-end-column="42" />
           <folding>
             <element signature="e#125#135#0" expanded="true" />
           </folding>
