@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
             host="localhost",
             user="databaseProject",
             passwd="password",
-            database="prem"
+            database="soccer"
         )
 
         self.cursor = self.database.cursor()
@@ -53,22 +53,35 @@ class MainWindow(QMainWindow):
         userInputF = QFrame(self.mainF)
         #Create the user input layout to be inside the frame
         userInputL = QVBoxLayout(userInputF)
+
+        userInputTopL = QHBoxLayout()
+        userInputTopF = QFrame()
+        userInputTopF.setLayout(userInputTopL)
+
         #Add the position select box
-        userInputL.addWidget(self.createPositionBox())
+        userInputTopL.addWidget(self.createPositionBox())
         #Add the FA/Waiver select box
-        userInputL.addWidget(self.createAvailabilityTypeBox())
+        userInputTopL.addWidget(self.createAvailabilityTypeBox())
+
+        userInputL.addWidget(userInputTopF)
         #Add the team select box
         userInputL.addWidget(self.createTeamSelectBox())
         #Add the sort algorithm
         userInputL.addWidget(self.createAlgorithmBox())
         #Search button to run search and find players
         searchButton = QPushButton(text="Search")
-        userInputL.addWidget(searchButton)
         #Connect search button with clicked command
         searchButton.clicked.connect(self.searchClick)
 
+        pictureFrame = QFrame()
+        pictureLayout = QHBoxLayout(pictureFrame)
+        pictureLayout.addStretch()
+        pictureLayout.addWidget(self.preparePremIcon())
+        pictureLayout.addStretch()
+        pictureLayout.addWidget(searchButton)
+        pictureLayout.addStretch()
         #Insert premier league icon
-        userInputL.addWidget(self.preparePremIcon())
+        userInputL.addWidget(pictureFrame)
 
         # Create the table frame
         tableF = QFrame(self.mainF)
@@ -87,16 +100,22 @@ class MainWindow(QMainWindow):
 
     def searchClick(self):
         self.fantraxTable.clear()
-        queryString = "select player_name, " + self.decodeSortAlgo() + " as algo from player"
+        queryString = "select name, game_played, club_id, goal, assist, " + self.decodeSortAlgo() + " as algo from player"
         if (self.defButton.isChecked()):
-            queryString = queryString + "\nwhere pos_id = 0"
+            queryString = queryString + "\nwhere position = 'F'"
         elif (self.midButton.isChecked()):
-            queryString = queryString + "\nwhere pos_id = 1"
+            queryString = queryString + "\nwhere position = 'M'"
         elif (self.fwdButton.isChecked()):
-            queryString = queryString + "\nwhere pos_id = 2"
+            queryString = queryString + "\nwhere position = 'F'"
+        else:
+            queryString = queryString + "\nwhere player_id < 1000"
+
 
         if (self.freeAgentOnlyButton.isChecked()):
-            queryString = queryString + '\nwhere availability = "FA"'
+            queryString = queryString + ' and status = "FA"'
+        elif(self.waiverOkButton.isChecked()):
+            queryString = queryString + ' and (status = "WW" or status = "FA")'
+
 
         queryString = queryString + self.decodeComboBox()
 
@@ -106,11 +125,30 @@ class MainWindow(QMainWindow):
 
         self.fantraxTable.setRowCount(50)
 
+        teams = ["Any", "AFC Bournemouth", "Arsenal", "Brighton and Hove Albion", "Burnley", "Cardiff City", "Chelsea",
+                 "Crystal Palace",
+                 "Everton", "Fulham", "Huddersfield Town", "Leicester City", "Liverpool", "Manchester City",
+                 "Manchester United", "Newcastle United", "Southampton", "Tottenham Hotspur", "Watford",
+                 "West Ham United", "Wolverhampton Wanderers"]
+
         i = 0
-        for player_name, algo in self.cursor:
-            self.fantraxTable.setItem(i, 0, QTableWidgetItem(player_name))
+        for name, game_played, club_id, goal, assist, algo in self.cursor:
+            self.fantraxTable.setItem(i, 0, QTableWidgetItem(name))
             self.fantraxTable.setItem(i, 1, QTableWidgetItem(str(algo)))
+            if (game_played > 5):
+                self.fantraxTable.setItem(i, 2, QTableWidgetItem(str(algo/game_played)))
+            else:
+                self.fantraxTable.setItem(i, 2, QTableWidgetItem('N/A'))
+            self.fantraxTable.setItem(i, 3, QTableWidgetItem(teams[int(club_id)]))
+            self.fantraxTable.setItem(i, 4, QTableWidgetItem(str(goal)))
+            self.fantraxTable.setItem(i, 5, QTableWidgetItem(str(assist)))
             i = i + 1
+        self.fantraxTable.setHorizontalHeaderItem(0, QTableWidgetItem('Name'))
+        self.fantraxTable.setHorizontalHeaderItem(1, QTableWidgetItem('Algorithm'))
+        self.fantraxTable.setHorizontalHeaderItem(2, QTableWidgetItem('Algo/Game'))
+        self.fantraxTable.setHorizontalHeaderItem(3, QTableWidgetItem('Club'))
+        self.fantraxTable.setHorizontalHeaderItem(4, QTableWidgetItem('Goals'))
+        self.fantraxTable.setHorizontalHeaderItem(5, QTableWidgetItem('Assists'))
 
 
     def decodeSortAlgo(self):
@@ -118,30 +156,48 @@ class MainWindow(QMainWindow):
             float(self.goalWeight.text())
             float(self.assistWeight.text())
             float(self.sotWeight.text())
+            float(self.dispossessionWeight.text())
+            float(self.accCrossWeight.text())
+            float(self.foulsSufferedWeight.text())
+            float(self.aerialWeight.text())
+            float(self.keyPassesWeight.text())
+            float(self.tackleWeight.text())
             float(self.yellowWeight.text())
             float(self.redWeight.text())
             float(self.tackleWeight.text())
-            float(self.keyPassesWeight.text())
             float(self.interceptionWeight.text())
+            float(self.clearanceWeight.text())
         except:
             error = QMessageBox(text="All algorithm values must be numbers.")
             error.exec()
             self.resetAlgoClick()
 
-        retString = "goals * " + self.goalWeight.text() + " + assists * " + self.assistWeight.text()\
-                    + " + shots_on_target * " + self.sotWeight.text() + " + yellow_cards * " + self.yellowWeight.text()
+        retString = "goal * " + self.goalWeight.text() + \
+                    " + assist * " + self.assistWeight.text() + \
+                    " + shot_on_target * " + self.sotWeight.text() + \
+                    " + dispossession * " + self.dispossessionWeight.text() + \
+                    " + accurate_cross * " + self.accCrossWeight.text() + \
+                    " + foul_suffered * " + self.foulsSufferedWeight.text() + \
+                    " + aerial_won * " + self.aerialWeight.text() + \
+                    " + key_pass * " + self.keyPassesWeight.text() + \
+                    " + tackle * " + self.tackleWeight.text() + \
+                    " + yellow_card * " + self.yellowWeight.text() + \
+                    " + red_card * " + self.redWeight.text() + \
+                    " + interception * " + self.interceptionWeight.text() + \
+                    " + clearance * " + self.clearanceWeight.text()
+
         return retString
 
 
     def decodeComboBox(self):
-        teams = ["Any", "AFC Bournemouth", "Arsenal", "Brighton", "Burnley", "Cardiff City", "Chelsea", "Crystal Palace",
-                 "Everton", "Fulham", "Huddersfield", "Leicester City", "Liverpool", "Manchester City",
+        teams = ["Any", "AFC Bournemouth", "Arsenal", "Brighton and Hove Albion", "Burnley", "Cardiff City", "Chelsea", "Crystal Palace",
+                 "Everton", "Fulham", "Huddersfield Town", "Leicester City", "Liverpool", "Manchester City",
                  "Manchester United", "Newcastle United", "Southampton", "Tottenham Hotspur", "Watford",
                  "West Ham United", "Wolverhampton Wanderers"]
         if (teams.index(self.teamSelectComboBox.currentText()) == 0):
             return ""
         else:
-            return "\nwhere club_id = " + str(teams.index(self.teamSelectComboBox.currentText()) - 1)
+            return " and club_id = " + str(teams.index(self.teamSelectComboBox.currentText()))
 
     def resetAlgoClick(self):
         self.goalWeight.setText("8")
@@ -152,6 +208,12 @@ class MainWindow(QMainWindow):
         self.tackleWeight.setText("1")
         self.keyPassesWeight.setText("2")
         self.interceptionWeight.setText("0.5")
+        self.clearanceWeight.setText("0.5")
+        self.interceptionWeight.setText("0.5")
+        self.aerialWeight.setText("0.5")
+        self.accCrossWeight.setText("2")
+        self.dispossessionWeight.setText("-0.25")
+        self.foulsSufferedWeight.setText("0.5")
         notification = QMessageBox(text="Resetting to standard weights.")
         notification.exec()
 
@@ -159,14 +221,15 @@ class MainWindow(QMainWindow):
     def createFantraxBox(self):
         fantraxGroup = QGroupBox("Available players based on set parameters")
         fantraxHolderLayout = QVBoxLayout()
-        self.fantraxTable.setColumnCount(5)
+        self.fantraxTable.setColumnCount(6)
         fantraxHeader = self.fantraxTable.horizontalHeader()
         fantraxHeader.setSectionResizeMode(0, QHeaderView.Stretch)
-        fantraxHeader.setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        fantraxHeader.setSectionResizeMode(1, QHeaderView.Stretch)
         fantraxHeader.setSectionResizeMode(2, QHeaderView.Stretch)
         fantraxHeader.setSectionResizeMode(3, QHeaderView.Stretch)
         fantraxHeader.setSectionResizeMode(4, QHeaderView.Stretch)
-        self.fantraxTable.setHorizontalHeaderLabels(["Name", "CScore", "Club", "Games", "Points per Game"])
+        fantraxHeader.setSectionResizeMode(5, QHeaderView.Stretch)
+        self.fantraxTable.setHorizontalHeaderLabels(["Name", "Algorithm", "Algo/Game", "Club", "Goals", "Assists"])
         fantraxHolderLayout.addWidget(self.fantraxTable)
         fantraxGroup.setLayout(fantraxHolderLayout)
         return fantraxGroup
@@ -218,34 +281,71 @@ class MainWindow(QMainWindow):
         self.goalWeight = QLineEdit()
         self.goalWeight.setFixedWidth(lineEditWidth)
         algorithmTextboxes1.addWidget(self.goalWeight)
+
         algorithmLabels1.addWidget(QLabel(text="Assists:"))
         self.assistWeight = QLineEdit()
         self.assistWeight.setFixedWidth(lineEditWidth)
         algorithmTextboxes1.addWidget(self.assistWeight)
-        algorithmLabels1.addWidget(QLabel(text="SoT:"))
-        self.sotWeight = QLineEdit()
-        self.sotWeight.setFixedWidth(lineEditWidth)
-        algorithmTextboxes1.addWidget(self.sotWeight)
-        algorithmLabels1.addWidget(QLabel(text="Yellows:"))
-        self.yellowWeight = QLineEdit()
-        self.yellowWeight.setFixedWidth(lineEditWidth)
-        algorithmTextboxes1.addWidget(self.yellowWeight)
-        algorithmLabels2.addWidget(QLabel(text="Reds:"))
-        self.redWeight = QLineEdit()
-        self.redWeight.setFixedWidth(lineEditWidth)
-        algorithmTextboxes2.addWidget(self.redWeight)
-        algorithmLabels2.addWidget(QLabel(text="Tackles:"))
-        self.tackleWeight = QLineEdit()
-        self.tackleWeight.setFixedWidth(lineEditWidth)
-        algorithmTextboxes2.addWidget(self.tackleWeight)
+
         algorithmLabels2.addWidget(QLabel(text="Key Passes:"))
         self.keyPassesWeight = QLineEdit()
         self.keyPassesWeight.setFixedWidth(lineEditWidth)
         algorithmTextboxes2.addWidget(self.keyPassesWeight)
+
+        algorithmLabels1.addWidget(QLabel(text="SoT:"))
+        self.sotWeight = QLineEdit()
+        self.sotWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes1.addWidget(self.sotWeight)
+
+        algorithmLabels2.addWidget(QLabel(text="Tackles:"))
+        self.tackleWeight = QLineEdit()
+        self.tackleWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes2.addWidget(self.tackleWeight)
+
+        algorithmLabels1.addWidget(QLabel(text="Dispossessions:"))
+        self.dispossessionWeight = QLineEdit()
+        self.dispossessionWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes1.addWidget(self.dispossessionWeight)
+
+        algorithmLabels1.addWidget(QLabel(text="Acc. Crosses:"))
+        self.accCrossWeight = QLineEdit()
+        self.accCrossWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes1.addWidget(self.accCrossWeight)
+
+        algorithmLabels1.addWidget(QLabel(text="Fouls Suf.:"))
+        self.foulsSufferedWeight = QLineEdit()
+        self.foulsSufferedWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes1.addWidget(self.foulsSufferedWeight)
+
+        algorithmLabels2.addWidget(QLabel(text="Yellows:"))
+        self.yellowWeight = QLineEdit()
+        self.yellowWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes2.addWidget(self.yellowWeight)
+
+        algorithmLabels2.addWidget(QLabel(text="Reds:"))
+        self.redWeight = QLineEdit()
+        self.redWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes2.addWidget(self.redWeight)
+
+        algorithmLabels2.addWidget(QLabel(text="Tackles:"))
+        self.tackleWeight = QLineEdit()
+        self.tackleWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes2.addWidget(self.tackleWeight)
+
         algorithmLabels2.addWidget(QLabel(text="Interceptions:"))
         self.interceptionWeight = QLineEdit()
         self.interceptionWeight.setFixedWidth(lineEditWidth)
         algorithmTextboxes2.addWidget(self.interceptionWeight)
+
+        algorithmLabels1.addWidget(QLabel(text="Aerials:"))
+        self.aerialWeight = QLineEdit()
+        self.aerialWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes1.addWidget(self.aerialWeight)
+
+        algorithmLabels2.addWidget(QLabel(text="Clearances:"))
+        self.clearanceWeight = QLineEdit()
+        self.clearanceWeight.setFixedWidth(lineEditWidth)
+        algorithmTextboxes2.addWidget(self.clearanceWeight)
 
         algorithmLabelsF1.setLayout(algorithmLabels1)
         algorithmTextboxesF1.setLayout(algorithmTextboxes1)
@@ -274,28 +374,13 @@ class MainWindow(QMainWindow):
         teamSelectBox = QGroupBox("Club")
         teamSelectBoxVBox = QVBoxLayout()
         self.teamSelectComboBox = QComboBox()
-        self.teamSelectComboBox.setCurrentText("Any")
-        self.teamSelectComboBox.addItem("Any")
-        self.teamSelectComboBox.addItem("AFC Bournemouth")
-        self.teamSelectComboBox.addItem("Arsenal")
-        self.teamSelectComboBox.addItem("Brighton")
-        self.teamSelectComboBox.addItem("Burnley")
-        self.teamSelectComboBox.addItem("Cardiff City")
-        self.teamSelectComboBox.addItem("Chelsea")
-        self.teamSelectComboBox.addItem("Crystal Palace")
-        self.teamSelectComboBox.addItem("Everton")
-        self.teamSelectComboBox.addItem("Fulham")
-        self.teamSelectComboBox.addItem("Huddersfield")
-        self.teamSelectComboBox.addItem("Leicester City")
-        self.teamSelectComboBox.addItem("Liverpool")
-        self.teamSelectComboBox.addItem("Manchester City")
-        self.teamSelectComboBox.addItem("Manchester United")
-        self.teamSelectComboBox.addItem("Newcastle United")
-        self.teamSelectComboBox.addItem("Southampton")
-        self.teamSelectComboBox.addItem("Tottenham Hotspur")
-        self.teamSelectComboBox.addItem("Watford")
-        self.teamSelectComboBox.addItem("West Ham United")
-        self.teamSelectComboBox.addItem("Wolverhampton Wanderers")
+        teams = {"Any", "AFC Bournemouth", "Arsenal", "Brighton and Hove Albion", "Burnley", "Cardiff City", "Chelsea", "Crystal Palace",
+        "Everton", "Fulham", "Huddersfield Town", "Leicester City", "Liverpool", "Manchester City",
+        "Manchester United", "Newcastle United", "Southampton", "Tottenham Hotspur", "Watford",
+        "West Ham United", "Wolverhampton Wanderers"}
+        for i in teams:
+            self.teamSelectComboBox.addItem(i)
+            self.teamSelectComboBox.setCurrentText("Any")
         teamSelectBoxVBox.addWidget(self.teamSelectComboBox)
         self.teamSelectComboBox.setStyleSheet("QComboBox {color: black} ")
         teamSelectBox.setLayout(teamSelectBoxVBox)

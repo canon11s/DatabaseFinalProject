@@ -5,8 +5,6 @@ resourcesPath = os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + '/lib/re
 
 df = pd.read_csv(resourcesPath + 'FantraxScrape.csv')
 
-print(df.head())
-
 teamToId = {
     'BOUR' : 1,
     'ARS' : 2,
@@ -33,12 +31,18 @@ teamToId = {
 #Things that need to be changed
 #   TEAM -> TEAM_ID
 #   STATUS -> WW, FA, OWNED ONLY
+df = df.drop("Rk", axis=1)
+df = df.drop("Opponent", axis=1)
+df = df.drop("FPts", axis=1)
+df = df.drop("FP/G", axis=1)
+df = df.drop("+/-", axis=1)
+df = df.drop("% Owned", axis=1)
 
 for i in range(0, len(df.index)):
     df.iloc[i, df.columns.get_loc('Team')] = teamToId[df.iloc[i, df.columns.get_loc('Team')]]
     if (df.iloc[i, df.columns.get_loc('Status')] != 'FA' and df.iloc[i, df.columns.get_loc('Status')] != 'WW'):
-        df.iloc[i, df.columns.get_loc('Status')] = 'OWNDED'
+        df.iloc[i, df.columns.get_loc('Status')] = 'OWNED'
     if (len(df.iloc[i, df.columns.get_loc('Position')]) != 1):
         df.iloc[i, df.columns.get_loc('Position')] = df.iloc[i, df.columns.get_loc('Position')][0:1]
 
-df.to_csv(resourcesPath + 'CleanedFantraxScrape.csv')
+df.to_csv(resourcesPath + 'CleanedFantraxScrape.csv', encoding='utf-8')

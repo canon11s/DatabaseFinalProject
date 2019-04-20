@@ -63,7 +63,7 @@ create table player (
     fantasy_assist int not null,
     shot_on_target int not null,
     tackle int not null,
-    disposession int not null,
+    dispossession int not null,
     foul_suffered int not null,
     yellow_card int not null,
     second_yellow_card int not null,
@@ -77,13 +77,8 @@ create table player (
     clean_sheet int not null
 );
 
-select * from player;
-
-insert into player (player_id, name, goals, assists, position, club_id) values
-(1, 'luke', 3, 0, 'For', 1),
-(2, 'canon', 5, 1, 'Mid', 1),
-(3, 'collin', 7, 2, 'Def', 1),
-(4, 'isaak', 1, 3, 'Def', 1);
+select * from player
+where (status = 'F' or status = 'as');
 
 
 drop table if exists player_award;
