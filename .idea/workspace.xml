@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab95a3fb-cca4-49b8-8703-c3a7100323ec" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/venv/src/FilterSelection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/src/PlayerDisplay.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/src/WebScrapes/CompilePlayerList.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/src/WebScrapes/FantraxScrape.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/src/WebScrapes/InjuredPlayers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/FinalProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/FinalProject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/src/View.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/resources/CleanedFantraxScrape.csv" beforeDir="false" afterPath="$PROJECT_DIR$/venv/resources/CleanedFantraxScrape.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/resources/FantraxScrape.csv" beforeDir="false" afterPath="$PROJECT_DIR$/venv/resources/FantraxScrape.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/resources/PremierLeagueIcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/venv/resources/PremierLeagueIcon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/resources/windowIcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/venv/resources/windowIcon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/src/FilterSelection.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/FilterSelection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/src/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/src/Main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,22 +21,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/src/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-509">
-              <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
+            <state relative-caret-position="165">
+              <caret line="11" column="73" selection-start-line="11" selection-start-column="73" selection-end-line="11" selection-end-column="73" />
               <folding>
                 <element signature="e#63#73#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/venv/src/CsvClean.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="10" column="17" lean-forward="true" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -55,8 +42,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/src/FilterSelection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4109">
-              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+            <state relative-caret-position="60">
+              <caret line="4" column="74" lean-forward="true" selection-start-line="4" selection-start-column="74" selection-end-line="4" selection-end-column="74" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -64,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/venv/src/WebScrapes/CompilePlayerList.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
@@ -131,8 +118,8 @@
       <find>reset</find>
       <find>mainTab</find>
       <find>self.defButton.i</find>
-      <find>searchClick</find>
       <find>query</find>
+      <find>searchClick</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -152,12 +139,12 @@
         <option value="$PROJECT_DIR$/venv/src/main.py" />
         <option value="$PROJECT_DIR$/venv/src/CsvClean.py" />
         <option value="$PROJECT_DIR$/venv/src/View.py" />
-        <option value="$PROJECT_DIR$/venv/src/Main.py" />
         <option value="$PROJECT_DIR$/venv/src/PlayerDisplay.py" />
-        <option value="$PROJECT_DIR$/venv/src/FilterSelection.py" />
         <option value="$PROJECT_DIR$/venv/src/WebScrapes/CompilePlayerList.py" />
         <option value="$PROJECT_DIR$/venv/src/WebScrapes/FantraxScrape.py" />
         <option value="$PROJECT_DIR$/venv/src/WebScrapes/InjuredPlayers.py" />
+        <option value="$PROJECT_DIR$/venv/src/Main.py" />
+        <option value="$PROJECT_DIR$/venv/src/FilterSelection.py" />
       </list>
     </option>
   </component>
@@ -193,6 +180,18 @@
               <item name="FinalProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="FinalProject" type="462c0819:PsiDirectoryNode" />
               <item name="venv" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FinalProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinalProject" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FinalProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinalProject" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -207,6 +206,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/venv" />
       <recent name="$PROJECT_DIR$/venv/src" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -318,12 +318,12 @@
     <frame x="0" y="23" width="1440" height="831" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.30796334" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30725864" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32882273" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32882273" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39834026" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -338,26 +338,15 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/venv/lib/resources/windowIcon.png">
+    <entry file="file://$PROJECT_DIR$/venv/resources/windowIcon.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/src/Main.py" />
-    <entry file="file://$PROJECT_DIR$/venv/lib/resources/PremierLeagueIcon.png">
+    <entry file="file://$PROJECT_DIR$/venv/resources/PremierLeagueIcon.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/lib/resources/CleanedFantraxScrape.csv">
+    <entry file="file://$PROJECT_DIR$/venv/resources/CleanedFantraxScrape.csv">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/WebScrapes/CompilePlayerList.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="74" selection-start-line="1" selection-start-column="74" selection-end-line="1" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <element signature="e#206#272#0" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/src/WebScrapes/FantraxScrape.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -379,22 +368,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/Main.py">
+    <entry file="file://$PROJECT_DIR$/venv/src/CsvClean.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-509">
-          <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
+        <state relative-caret-position="285">
+          <caret line="19" column="15" lean-forward="true" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
           <folding>
-            <element signature="e#63#73#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/FilterSelection.py">
+    <entry file="file://$PROJECT_DIR$/venv/src/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4109">
-          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        <state relative-caret-position="165">
+          <caret line="11" column="73" selection-start-line="11" selection-start-column="73" selection-end-line="11" selection-end-column="73" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#63#73#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -406,12 +395,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/src/CsvClean.py">
+    <entry file="file://$PROJECT_DIR$/venv/src/FilterSelection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="10" column="17" lean-forward="true" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        <state relative-caret-position="60">
+          <caret line="4" column="74" lean-forward="true" selection-start-line="4" selection-start-column="74" selection-end-line="4" selection-end-column="74" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/src/WebScrapes/CompilePlayerList.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="74" selection-start-line="1" selection-start-column="74" selection-end-line="1" selection-end-column="74" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#206#272#0" />
           </folding>
         </state>
       </provider>

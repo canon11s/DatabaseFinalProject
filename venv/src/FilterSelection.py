@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import os
 
-resourcesPath = os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + '/lib/resources/'
+resourcesPath = os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + '/resources/'
 
 #Class to work with the user input to build queries
 class FilterSelection():

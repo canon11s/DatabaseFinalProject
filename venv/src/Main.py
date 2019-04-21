@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 import mysql.connector
 import os.path
 
-resourcesPath = os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + '/lib/resources/'
+resourcesPath = os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + '/resources/'
 
 #Class for the main window
 class MainWindow(QMainWindow):
