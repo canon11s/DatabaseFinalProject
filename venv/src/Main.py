@@ -86,7 +86,7 @@ def createDarkPalette():
 if __name__ == '__main__':
     app = QApplication([])
     app.setPalette(createDarkPalette())
-    app.setWindowIcon(QIcon(resourcesPath + 'PremierLeagueIcon.png'))
+    app.setWindowIcon(QIcon(resourcesPath + 'newIcon.png'))
     mainWin = MainWindow()
     mainWin.show()
     sys.exit(app.exec())
